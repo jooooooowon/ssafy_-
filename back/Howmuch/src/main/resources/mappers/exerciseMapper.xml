@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.ssafy.howmuch.model.dao.ExerciseDao">
+	<!-- 이 방식으로는 커리큘럼 이름을 가지고 올수 없다. -->
+	<!-- <select id="selectAll" resultType="User"> SELECT id, password, name, 
+		curriculum_code as currsiculumCode FROM users </select> -->
+	<insert id="addExercise" parameterType="Exercise">
+		INSERT INTO exercise
+		(userId, startTime, endTime,
+		squatWeight, squatCount, squatSet,
+		deadWeight, deadCount, deadSet,
+		benchWeight, benchCount, benchSet)
+		VALUES(#{userId},#{startTime},#{endTime},#{squatWeight},#{squatCount},#{squatSet},#{deadWeight},#{deadCount},#{deadSet},#{benchWeight},#{benchCount},#{benchSet})
+	</insert>
+
+	<select id="listById" parameterType="string"
+		resultType="Exercise">
+		SELECT *
+		FROM exercise
+		WHERE userId = #{id};
+	</select>
+
+	<delete id="deleteExercise" parameterType="int">
+		DELETE FROM exercise
+		WHERE exerciseId = #{exerciseId}
+	</delete>
+
+	<select id="chkExercise" parameterType="ExerciseChk" resultType="string">
+		SELECT
+		exerciseId
+		FROM exercise
+		WHERE userid = #{userId} AND YEAR(starttime) = #{year} AND
+		MONTH(starttime) = #{month} AND DAY(starttime) = #{day}
+	</select>
+	
+	<update id="editExercise" parameterType="Exercise">
+		UPDATE exercise SET startTime = #{startTime}, endTime=#{endTime}, squatWeight = #{squatWeight}, squatCount = #{squatCount}, squatSet = #{squatSet}, deadWeight = #{deadWeight}, deadCount = #{deadCount}, deadSet = #{deadSet}, benchWeight = #{benchWeight}, benchCount = #{benchCount}, benchSet = #{benchSet}
+		WHERE exerciseId = #{exerciseId}
+	</update>
+</mapper>
+
